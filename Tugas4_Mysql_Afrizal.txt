@@ -1,0 +1,122 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 4 MYSQL
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema dbBengkelMotor
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema dbBengkelMotor
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `dbBengkelMotor` DEFAULT CHARACTER SET utf8 ;
+USE `dbBengkelMotor` ;
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`part`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`part` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `kode` VARCHAR(45) NOT NULL,
+  `nama` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`jasa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`jasa` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `kode` VARCHAR(45) NOT NULL,
+  `nama` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`customer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `no_customer` VARCHAR(45) NOT NULL,
+  `nama` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`service` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `kode_transaksi` VARCHAR(45) NOT NULL,
+  `date_transaksi` DATE NOT NULL,
+  `customer_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_service_customer1_idx` (`customer_id` ASC),
+  CONSTRAINT `fk_service_customer1`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `dbBengkelMotor`.`customer` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`detai_jasa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`detai_jasa` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `qyt` VARCHAR(45) NOT NULL,
+  `jasa_id` INT NOT NULL,
+  `service_id` INT NOT NULL,
+  INDEX `fk_jasa_has_service_service1_idx` (`service_id` ASC),
+  INDEX `fk_jasa_has_service_jasa1_idx` (`jasa_id` ASC),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_jasa_has_service_jasa1`
+    FOREIGN KEY (`jasa_id`)
+    REFERENCES `dbBengkelMotor`.`jasa` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_jasa_has_service_service1`
+    FOREIGN KEY (`service_id`)
+    REFERENCES `dbBengkelMotor`.`service` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `dbBengkelMotor`.`part_has_service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbBengkelMotor`.`part_has_service` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `qty` VARCHAR(45) NOT NULL,
+  `part_id` INT NOT NULL,
+  `service_id` INT NOT NULL,
+  INDEX `fk_part_has_service_service1_idx` (`service_id` ASC),
+  INDEX `fk_part_has_service_part1_idx` (`part_id` ASC),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_part_has_service_part1`
+    FOREIGN KEY (`part_id`)
+    REFERENCES `dbBengkelMotor`.`part` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_part_has_service_service1`
+    FOREIGN KEY (`service_id`)
+    REFERENCES `dbBengkelMotor`.`service` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

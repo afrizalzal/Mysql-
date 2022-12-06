@@ -1,0 +1,24 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 5 MYSQL
+/*buatlah query-query
+INNER JOIN TABLE employees (4 field bebas) dengan offices (3 field bebas)
+INNER JOIN TABLE employees (4 field bebas)dengan offices (3 field bebas) dengan mengaliaskan tabelnya
+OUTER JOIN TABLE employees (4 field bebas) dengan offices (3 field bebas) dengan mengaliaskan tabelnya*/
+USE pos;
+SHOW TABLES;
+DESC employees;
+DESC offices;
+
+SELECT employees.firstName, employees.lastName, employees.email, employees.jobTitle,
+offices.addressLine1, offices.city, offices.country FROM employees INNER JOIN offices
+ON employees.officeCode = offices.officeCode;
+
+SELECT ep.firstName, ep.lastName, ep.email, ep.jobTitle,
+oc.addressLine1, oc.city, oc.country FROM employees ep INNER JOIN offices oc
+ON ep.officeCode = oc.officeCode;
+
+SELECT ep.firstName, ep.lastName, ep.email, ep.jobTitle,
+oc.addressLine1, oc.city, oc.country FROM employees ep LEFT JOIN offices oc
+ON ep.officeCode = oc.officeCode;

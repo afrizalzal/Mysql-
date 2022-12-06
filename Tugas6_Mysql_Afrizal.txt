@@ -1,0 +1,61 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 6 MYSQL
+1. Buat INNER JOIN 4 TABLE:
+   offices: addressLine1, phone, city as kota
+   employees: firstName, email, jobTitle
+   customers: customerName, phone as telp, city
+   payments: paymentDate, amount
+2. Setelah itu buat tabel viewnya: customer_vw*/
+
+USE pos;
+
+-- INNER JOIN 4 TABLE: OFFICES, EMPLOYEES, CUSTOMERS DAN PAYMENTS MENGGUNAKAN ALIAS TABLE
+SELECT 
+    ep.firstName,
+    ep.email,
+    ep.jobTitle,
+    oc.phone,
+    oc.addressLine1,
+    oc.city AS kota,
+    cs.customerName,
+    cs.phone AS telp,
+    cs.city,
+    py.paymentDate,
+    py.amount
+FROM
+    customers cs
+        INNER JOIN
+    payments py ON cs.customerNumber = py.customerNumber
+        INNER JOIN
+    employees ep ON ep.employeeNumber = cs.salesRepEmployeeNumber
+        INNER JOIN
+    offices oc ON oc.officeCode = ep.officeCode;
+
+
+-- BUAT TABEL VIEW(bayangan)
+CREATE VIEW customers_vw AS
+    SELECT 
+        ep.firstName,
+        ep.email,
+        ep.jobTitle,
+        oc.phone,
+        oc.addressLine1,
+        oc.city AS kota,
+        cs.customerName,
+        cs.phone AS telp,
+        cs.city,
+        py.paymentDate,
+        py.amount
+    FROM
+        customers cs
+            INNER JOIN
+        payments py ON cs.customerNumber = py.customerNumber
+            INNER JOIN
+        employees ep ON ep.employeeNumber = cs.salesRepEmployeeNumber
+            INNER JOIN
+        offices oc ON oc.officeCode = ep.officeCode;
+
+-- PANGGIL TABEL VIEW
+SELECT * FROM customers_vw;

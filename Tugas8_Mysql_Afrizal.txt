@@ -1,0 +1,41 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 8 MYSQL
+USE dbrentalbus;
+
+Buatlah trigger: updateStatus dengan ketentuan, jika pelanggan menyewa sebuah bus di tabel transaksi akan mentrigger:
+Status kendaraan berubah yang sebelum Bebas menjadi Jalan
+Status sopir berubah yang sebelum Bebas menjadi Jalan*/
+DELIMITER $$
+CREATE TRIGGER updateStatus
+AFTER INSERT ON transaksi
+FOR EACH ROW
+BEGIN
+UPDATE kendaraan SET status = 'Jalan'
+WHERE id = NEW.idkendaraan;
+UPDATE sopir SET status = 'Jalan'
+WHERE id = NEW.idsopir;
+END$$
+
+-- test apakah status pada table kendaraan dan sopir sudah 'jalan' dengan menambahkan data pada table transaksi
+INSERT INTO transaksi (idpelanggan,idsopir,idkendaraan,tglmulai,tglselesai,lamasewa,tglovertime,jmlovertime,total,status) 
+VALUES (1,2,2,'2017-01-01','2017-01-05',5,'2017-01-05',3,555000,'Mulai');
+SELECT * FROM kendaraan;
+SELECT * FROM sopir;
+
+Trigger jika pelanggan membatalkan maka status Kendaraan dan Sopir menjadi 'Bebas' */
+DELIMITER $$
+CREATE OR REPLACE TRIGGER restoreStatus
+AFTER DELETE 
+ON transaksi
+FOR EACH ROW
+BEGIN
+UPDATE kendaraan SET status = 'Bebas'
+WHERE id = OLD.idkendaraan;
+UPDATE sopir SET status = 'Bebas'
+WHERE id = OLD.idsopir;
+END $$
+
+-- DELETE Data untuk ubah status menjadi 'Bebas'
+DELETE FROM transaksi WHERE id = 6;

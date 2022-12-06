@@ -1,0 +1,179 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 2 MYSQL
+MariaDB [dbpegawai]> SHOW TABLES;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| pegawai             |
++---------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [dbpegawai]> SHOW TABLES;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| pegawai             |
++---------------------+
+2 rows in set (0.002 sec)
+
+MariaDB [dbpegawai]> DESC divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.028 sec)
+
+MariaDB [dbpegawai]> DESC pegawai;
++-----------+---------------+------+-----+---------+----------------+
+| Field     | Type          | Null | Key | Default | Extra          |
++-----------+---------------+------+-----+---------+----------------+
+| id        | int(11)       | NO   | PRI | NULL    | auto_increment |
+| nip       | char(5)       | NO   | UNI | NULL    |                |
+| nama      | varchar(30)   | NO   |     | NULL    |                |
+| gender    | enum('L','P') | NO   |     | NULL    |                |
+| tmp_lahir | varchar(30)   | NO   |     | NULL    |                |
+| tgl_lahir | date          | NO   |     | NULL    |                |
+| iddivisi  | int(11)       | NO   |     | NULL    |                |
+| alamat    | text          | YES  |     | NULL    |                |
++-----------+---------------+------+-----+---------+----------------+
+8 rows in set (0.025 sec)
+
+MariaDB [dbpegawai]> INSERT INTO divisi VALUES ('','SDM'),('','Keuangan'),('','Marketing'),('','IT');
+Query OK, 4 rows affected, 4 warnings (0.058 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+MariaDB [dbpegawai]> INSERT INTO pegawai (nip,nama,gender,tmp_lahir,tgl_lahir,iddivisi,alamat) VALUES
+    -> ('P01','Rehan Sapati','L','Jombang','1997-12-09',1,'Jombang Jawa Timur'),
+    -> ('P02','Jamal Putra','L','Palembang','1999-09-06',1,'Palembang Sumatra Selatan'),
+    -> ('P03','Sinta Cyla','P','Bekasi','1998-04-21',1,'Bekasi Jawa Barat'),
+    -> ('P04','Ale Afga','L','Jakarta','2000-11',20,'Jakarta'),
+    -> ('P05','Syifa','P','Bekasi','2001-07-07',1,'Depok Jawa Barat'),
+    -> ('P06','Ihsan','L','Malang','1999-02-11',2,'Malang Jawa Timur'),
+    -> ('P07','Raka','L','Yogyakarta','2002-03-22',2,'Yogyakarta'),
+    -> ('P08','Helmi','L','Solo','2000-10-10',2,'Solo Jawa Tengah'),
+    -> ('P09','Yuyun','P','Manado','1998-03-16',2,'Manado'),
+    -> ('P10','Pratama Arhan','L','Bogor','1998-05-05',2,'Bogor Jawa Barat'),
+    -> ('P11','Layla Fitria','P','Surabaya','1999-05-15',3,'Surabaya Jawa Timur'),
+    -> ('P12','Ujang Herlan','L','Malang','1999-02-12',3,'Malang Jawa Timur'),
+    -> ('P13','Arip Suteo','L','Probolinggo','1997-02-15',3,'Probolinggo Jawa Timur'),
+    -> ('P14','Rizky Hafidz','L','Madiun','1999-07-18',3,'Madiun Jawa Timur'),
+    -> ('P15','Abdul Latip','L','Kediri','1996-04-15',3,'Kediri Jawa Timur'),
+    -> ('P16','Gunawan','L','Bogor','2000-05-05',3,'Bogor Jawa Barat'),
+    -> ('P17','Nuraini','P','Depok','2001-04-06',3,'Depok Jawa Barat'),
+    -> ('P18','Nadia Nurlinda','P','Jakarta','2001-08-03',3,'Jakarta'),
+    -> ('P19','Faizal Fakhri','L','Bogor','2000-10-09',3,'Bogor Jawa Barat'),
+    -> ('P20','Bayu Sandi','L','Bogor','2000-09-20',3,'Bogor Jawa Barat'),
+    -> ('P21','Giska','P','Bogor','2000-04-22',4,'Bogor Jawa Barat'),
+    -> ('P22','Cayla Larasati','P','Depok','2000-07-12',4,'Depok Jawa Barat'),
+    -> ('P23','Lucia Mala','P','Depok','2000-09-16',4,'Depok Jawa Barat'),
+    -> ('P24','Zaky Fauzan Ajiz','L','Bekasi','2000-12-13',4,'Bekasi Jawa Barat'),
+    -> ('P25','Ridwan Sanusi','L','Bogor','2000-01-11',4,'Bogor Jawa Barat');
+Query OK, 25 rows affected, 1 warning (0.020 sec)
+Records: 25  Duplicates: 0  Warnings: 1
+
+MariaDB [dbpegawai]> SELECT * FROM divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [dbpegawai]> SELECT * FROM pegawai;
++----+-----+------------------+--------+-------------+------------+----------+---------------------------+
+| id | nip | nama             | gender | tmp_lahir   | tgl_lahir  | iddivisi | alamat                    |
++----+-----+------------------+--------+-------------+------------+----------+---------------------------+
+|  1 | P01 | Rehan Sapati     | L      | Jombang     | 1997-12-09 |        1 | Jombang Jawa Timur        |
+|  2 | P02 | Jamal Putra      | L      | Palembang   | 1999-09-06 |        1 | Palembang Sumatra Selatan |
+|  3 | P03 | Sinta Cyla       | P      | Bekasi      | 1998-04-21 |        1 | Bekasi Jawa Barat         |
+|  4 | P04 | Ale Afga         | L      | Jakarta     | 0000-00-00 |       20 | Jakarta                   |
+|  5 | P05 | Syifa            | P      | Bekasi      | 2001-07-07 |        1 | Depok Jawa Barat          |
+|  6 | P06 | Ihsan            | L      | Malang      | 1999-02-11 |        2 | Malang Jawa Timur         |
+|  7 | P07 | Raka             | L      | Yogyakarta  | 2002-03-22 |        2 | Yogyakarta                |
+|  8 | P08 | Helmi            | L      | Solo        | 2000-10-10 |        2 | Solo Jawa Tengah          |
+|  9 | P09 | Yuyun            | P      | Manado      | 1998-03-16 |        2 | Manado                    |
+| 10 | P10 | Pratama Arhan    | L      | Bogor       | 1998-05-05 |        2 | Bogor Jawa Barat          |
+| 11 | P11 | Layla Fitria     | P      | Surabaya    | 1999-05-15 |        3 | Surabaya Jawa Timur       |
+| 12 | P12 | Ujang Herlan     | L      | Malang      | 1999-02-12 |        3 | Malang Jawa Timur         |
+| 13 | P13 | Arip Suteo       | L      | Probolinggo | 1997-02-15 |        3 | Probolinggo Jawa Timur    |
+| 14 | P14 | Rizky Hafidz     | L      | Madiun      | 1999-07-18 |        3 | Madiun Jawa Timur         |
+| 15 | P15 | Abdul Latip      | L      | Kediri      | 1996-04-15 |        3 | Kediri Jawa Timur         |
+| 16 | P16 | Gunawan          | L      | Bogor       | 2000-05-05 |        3 | Bogor Jawa Barat          |
+| 17 | P17 | Nuraini          | P      | Depok       | 2001-04-06 |        3 | Depok Jawa Barat          |
+| 18 | P18 | Nadia Nurlinda   | P      | Jakarta     | 2001-08-03 |        3 | Jakarta                   |
+| 19 | P19 | Faizal Fakhri    | L      | Bogor       | 2000-10-09 |        3 | Bogor Jawa Barat          |
+| 20 | P20 | Bayu Sandi       | L      | Bogor       | 2000-09-20 |        3 | Bogor Jawa Barat          |
+| 21 | P21 | Giska            | P      | Bogor       | 2000-04-22 |        4 | Bogor Jawa Barat          |
+| 22 | P22 | Cayla Larasati   | P      | Depok       | 2000-07-12 |        4 | Depok Jawa Barat          |
+| 23 | P23 | Lucia Mala       | P      | Depok       | 2000-09-16 |        4 | Depok Jawa Barat          |
+| 24 | P24 | Zaky Fauzan Ajiz | L      | Bekasi      | 2000-12-13 |        4 | Bekasi Jawa Barat         |
+| 25 | P25 | Ridwan Sanusi    | L      | Bogor       | 2000-01-11 |        4 | Bogor Jawa Barat          |
++----+-----+------------------+--------+-------------+------------+----------+---------------------------+
+25 rows in set (0.001 sec)
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Sutisna', gender = 'P', tmp_lahir = 'Bali' WHERE id = 3;
+Query OK, 1 row affected (0.019 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Kakang', gender = 'L', tmp_lahir = 'Bogor' WHERE id = 12;
+Query OK, 1 row affected (0.018 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Sulaiman', gender = 'L', tmp_lahir = 'Bekasi' WHERE id = 5;
+Query OK, 1 row affected (0.018 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Yusuf', gender = 'L', tmp_lahir = 'Depok' WHERE id = 21;
+Query OK, 1 row affected (0.013 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> UPDATE pegawai SET nama = 'Tasya Pristy', gender = 'P', tmp_lahir = 'Depok' WHERE id = 18;
+Query OK, 1 row affected (0.017 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> DELETE FROM pegawai WHERE id = 25;
+Query OK, 1 row affected (0.019 sec)
+
+MariaDB [dbpegawai]> DELETE FROM pegawai WHERE id = 24;
+Query OK, 1 row affected (0.017 sec)
+
+MariaDB [dbpegawai]> SELECT * FROM pegawai;
++----+-----+----------------+--------+-------------+------------+----------+---------------------------+
+| id | nip | nama           | gender | tmp_lahir   | tgl_lahir  | iddivisi | alamat                    |
++----+-----+----------------+--------+-------------+------------+----------+---------------------------+
+|  1 | P01 | Rehan Sapati   | L      | Jombang     | 1997-12-09 |        1 | Jombang Jawa Timur        |
+|  2 | P02 | Jamal Putra    | L      | Palembang   | 1999-09-06 |        1 | Palembang Sumatra Selatan |
+|  3 | P03 | Sutisna        | P      | Bali        | 1998-04-21 |        1 | Bekasi Jawa Barat         |
+|  4 | P04 | Ale Afga       | L      | Jakarta     | 0000-00-00 |       20 | Jakarta                   |
+|  5 | P05 | Sulaiman       | L      | Bekasi      | 2001-07-07 |        1 | Depok Jawa Barat          |
+|  6 | P06 | Ihsan          | L      | Malang      | 1999-02-11 |        2 | Malang Jawa Timur         |
+|  7 | P07 | Raka           | L      | Yogyakarta  | 2002-03-22 |        2 | Yogyakarta                |
+|  8 | P08 | Helmi          | L      | Solo        | 2000-10-10 |        2 | Solo Jawa Tengah          |
+|  9 | P09 | Yuyun          | P      | Manado      | 1998-03-16 |        2 | Manado                    |
+| 10 | P10 | Pratama Arhan  | L      | Bogor       | 1998-05-05 |        2 | Bogor Jawa Barat          |
+| 11 | P11 | Layla Fitria   | P      | Surabaya    | 1999-05-15 |        3 | Surabaya Jawa Timur       |
+| 12 | P12 | Kakang         | L      | Bogor       | 1999-02-12 |        3 | Malang Jawa Timur         |
+| 13 | P13 | Arip Suteo     | L      | Probolinggo | 1997-02-15 |        3 | Probolinggo Jawa Timur    |
+| 14 | P14 | Rizky Hafidz   | L      | Madiun      | 1999-07-18 |        3 | Madiun Jawa Timur         |
+| 15 | P15 | Abdul Latip    | L      | Kediri      | 1996-04-15 |        3 | Kediri Jawa Timur         |
+| 16 | P16 | Gunawan        | L      | Bogor       | 2000-05-05 |        3 | Bogor Jawa Barat          |
+| 17 | P17 | Nuraini        | P      | Depok       | 2001-04-06 |        3 | Depok Jawa Barat          |
+| 18 | P18 | Tasya Pristy   | P      | Depok       | 2001-08-03 |        3 | Jakarta                   |
+| 19 | P19 | Faizal Fakhri  | L      | Bogor       | 2000-10-09 |        3 | Bogor Jawa Barat          |
+| 20 | P20 | Bayu Sandi     | L      | Bogor       | 2000-09-20 |        3 | Bogor Jawa Barat          |
+| 21 | P21 | Yusuf          | L      | Depok       | 2000-04-22 |        4 | Bogor Jawa Barat          |
+| 22 | P22 | Cayla Larasati | P      | Depok       | 2000-07-12 |        4 | Depok Jawa Barat          |
+| 23 | P23 | Lucia Mala     | P      | Depok       | 2000-09-16 |        4 | Depok Jawa Barat          |
++----+-----+----------------+--------+-------------+------------+----------+---------------------------+
+23 rows in set (0.001 sec)
+
+MariaDB [dbpegawai]>

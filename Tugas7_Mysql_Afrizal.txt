@@ -1,0 +1,115 @@
+NAMA 	 : AFRIZAL
+NIM  	 : 2019470006
+KELOMPOK : 3
+TUGAS    : TUGAS 7 MYSQL
+USE dbpegawai_kampusmerdeka;
+
+-- Buat index untuk kolom nama pegawai dengan nama: nama_pegawai_idx --
+CREATE INDEX nama_pegawai_idx ON pegawai(nama);
+
+
+-- Buat fungsi inputPegawai(8 parameter...), setelah itu panggil fungsinya --
+DELIMITER $$
+CREATE PROCEDURE inputPegawai(
+	nip CHAR(3),nama VARCHAR(45),jabatan_id INT,divisi_id INT,
+    gender ENUM('L','P'),tmp_lahir VARCHAR(45),tgl_lahir DATE,alamat TEXT
+)
+BEGIN
+	INSERT INTO pegawai(nip,nama,jabatan_id,divisi_id,gender,tmp_lahir,tgl_lahir,alamat)
+    VALUES (nip,nama,jabatan_id,divisi_id,gender,tmp_lahir,tgl_lahir,alamat);
+END $$
+DELIMITER ;
+CALL inputPegawai('111','Galang Regar',1,1,'L','Bogor','1984/4/3','Bogor Jawa Barat');
+CALL inputPegawai('112','Sandrina',2,2,'P','Bogor','1990/7/3','Bogor Jawa Barat');
+CALL inputPegawai('113','Bima Raga',1,3,'L','Jakarta','1983-8-9','DKI Jakarta');
+CALL inputPegawai('114','Sinta Dewi',3,3,'p','Bogor','1995-1-2','Bogor Jawa Barat');
+CALL inputPegawai('115','Umar Karyo',1,3,'L','Bogor','1990-11-28','Bogor Jawa Barat');
+
+
+-- Buat fungsi showPegawai(), setelah itu panggil fungsinya --
+DELIMITER $$
+CREATE PROCEDURE showPegawai()
+BEGIN
+	SELECT * FROM pegawai;
+END $$
+DELIMITER ;
+CALL showPegawai();
+
+
+-- Buat fungsi inputGaji(3 parameter[gapok, tunjab dan pegawai_id]), setelah itu panggil fungsinya --
+DELIMITER $$
+CREATE PROCEDURE inputGaji(
+	gapok DOUBLE,tunjab DOUBLE,pegawai_id INT
+)
+BEGIN
+	INSERT INTO gaji(gapok,tunjab,pegawai_id)
+    VALUES (gapok,tunjab,pegawai_id);
+END $$
+DELIMITER ;
+CALL inputGaji(15000000,5000000,1);
+
+-- Buat fungsi showGaji(), setelah itu panggil fungsinya --
+DELIMITER $$
+CREATE PROCEDURE showGaji()
+BEGIN
+	SELECT * FROM gaji;
+END $$
+DELIMITER ;
+CALL showGaji();
+
+
+-- Buat fungsi totalGaji(in gapok, in tunjab, out total), setelah itu panggil fungsinya  --
+DELIMITER $$
+CREATE PROCEDURE totalGaji(in gapok DOUBLE, in tunjab DOUBLE, out total DOUBLE)
+BEGIN
+	SET total = gapok + tunjab;
+    SELECT total;
+END $$
+DELIMITER ; 
+call totalGaji(15000000,5000000,@totalGaji);
+call totalGaji(10000000,3000000,@totalGaji);
+call totalGaji(15000000,5000000,@totalGaji);
+call totalGaji(4000000,1000000,@totalGaji);
+call totalGaji(15000000,5000000,@totalGaji);
+
+-- nampilin procedure
+SHOW PROCEDURE STATUS;
+
+/* Tampilkan Slip Gaji
+ SELECT pegawai.nip, pegawai.nama, jabatan.nama AS posisi, divisi.nama AS departemen,
+ gaji.gapok, gaji.tunjab, SELECT @totalGaji(parameter2...) FROM pegawai
+ INNER JOIN ke tabel gaji, divisi dan jabatan*/
+SELECT 
+    pegawai.nip,
+    pegawai.nama,
+    jabatan.nama AS posisi,
+    divisi.nama AS departemen,
+    gaji.gapok,
+    gaji.tunjab,
+    (select @totalGaji) AS total_gaji
+FROM 
+    pegawai
+	INNER JOIN gaji ON gaji.pegawai_id = pegawai.id
+        INNER JOIN jabatan ON jabatan.id = pegawai.jabatan_id
+        INNER JOIN divisi ON divisi.id = pegawai.divisi_id       
+-- buatkan query panjang di atas menjadi sebuah view baru: slip_gaji_pegawai_vw
+CREATE VIEW slip_gaji_pegawai_vw AS
+SELECT 
+    pegawai.nip,
+    pegawai.nama,
+    jabatan.nama AS posisi,
+    divisi.nama AS departemen,
+    gaji.gapok,
+    gaji.tunjab,
+    CASE
+	WHEN gaji.id IN (1,2,3,4,5) THEN gaji.gapok + gaji.tunjab
+	ELSE 0
+    END AS total_gaji
+FROM 
+    pegawai
+	INNER JOIN gaji ON gaji.pegawai_id = pegawai.id
+        INNER JOIN jabatan ON jabatan.id = pegawai.jabatan_id
+        INNER JOIN divisi ON divisi.id = pegawai.divisi_id;
+        
+-- panggil tabel view
+SELECT * FROM slip_gaji_pegawai_vw;
